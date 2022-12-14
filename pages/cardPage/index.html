@@ -23,11 +23,20 @@
 					<li class="nav-item">
 						<a class="nav-link active" href="#">Card Books</a>
 					</li>
+					<li>
+						<form class="d-flex">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+					</li>
 				</ul>
-				<form class="d-flex">
-					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-					<button class="btn btn-outline-success" type="submit">Search</button>
-				</form>
+				<!-- блок регистрации входа и отображения пользователя -->
+				<div>
+					<label class="form-label me-2">Пользователь: Иванов Василий Федорович Роль: Администратор</label>
+					<button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#enterModal">Вход</button>
+					<button type="button" class="btn btn-outline-info">Выход</button>
+					<button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#registrationModal">Регистрация</button>
+				</div>
 			</div>
 		</nav>
 		<!-- Содержимое страницы -->
@@ -119,6 +128,70 @@
 							<h5 class="card-title">Special title treatment</h5>
 							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 							<a href="#" class="btn btn-primary">Go somewhere</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- модальное окно входа -->
+			<div class="modal fade modal-lg" id="enterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Вход</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="mb-3">
+									<label for="exampleInputEmail1" class="form-label">Имя пользователя</label>
+									<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+									<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+								</div>
+								<div class="mb-3">
+									<label for="exampleInputPassword1" class="form-label">Пароль</label>
+									<input type="password" class="form-control" id="exampleInputPassword1" />
+								</div>
+								<div class="mb-3 form-check">
+									<input type="checkbox" class="form-check-input" id="exampleCheck1" />
+									<label class="form-check-label" for="exampleCheck1">Check me out</label>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary">войти</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">выйти</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- модальное окно регистрации -->
+			<div class="modal fade modal-lg" id="registrationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Регистрация</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="mb-3">
+									<label for="exampleInputEmail1" class="form-label">Имя пользователя</label>
+									<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+									<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+								</div>
+								<div class="mb-3">
+									<label for="exampleInputPassword1" class="form-label">Пароль</label>
+									<input type="password" class="form-control" id="exampleInputPassword1" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleInputPassword1" class="form-label">Роль</label>
+									<input type="password" class="form-control" id="exampleInputRole" />
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary">Зарегистрироваться</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">выйти</button>
 						</div>
 					</div>
 				</div>
