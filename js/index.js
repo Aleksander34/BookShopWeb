@@ -1,16 +1,27 @@
+import bookService from "./api/bookService.js";
 $(function () {
 	let t = $('#loadTable').DataTable({
 		processing: true,
 		serverSide: true,
-		ajax: {
-			url: 'https://localhost:7160/api/Book/GetAll',
-			type: 'GET',
-		},
+		paging: true,
+		ajax: 
+			 async (data, success, failure) => {
+
+					let filter = {};
+					filter.countOnPage = data.length;
+					filter.skipCount = data.start;
+					console.log(data);
+					let result = await bookService.getAll(filter);
+					console.log(result);
+					success(result);
+			},
+
 		columns: [
 			{
 				searchable: false,
 				orderable: false,
 				targets: 0,
+				data: "id",
 			},
 			{ data: 'title' },
 			{ data: 'description' },
