@@ -9,8 +9,8 @@ $(function () {
 		paginate: {
 			first: 'первая страница',
 			last: 'последняя страница',
-			next: 'следующая страница',
-			previous: 'предыдущая страница',
+			next: '>>',
+			previous: '<<',
 		},
 	};
 	$('#loadTable').DataTable({
