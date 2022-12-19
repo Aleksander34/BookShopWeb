@@ -1,6 +1,8 @@
-import bookService from "./api/bookService.js";
-import reviewService from "./api/reviewService.js";
+//импорт сервисов
+import bookService from './api/bookService.js';
+import reviewService from './api/reviewService.js';
 $(function () {
+	//Локализация таблицы
 	let language = {
 		emptyTable: 'нет данных',
 		info: 'показано c: _START_ по: _END_ из: _TOTAL_',
@@ -13,6 +15,8 @@ $(function () {
 			previous: '<<',
 		},
 	};
+
+	//Таблица отображения загрузки книг
 	$('#loadTable').DataTable({
 		processing: true,
 		serverSide: true,
@@ -31,18 +35,16 @@ $(function () {
 		].join(''),
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
 		language: language,
-		ajax: 
-			 async (data, success, failure) => {
-
-					let filter = {};
-					filter.countOnPage = data.length;
-					filter.skipCount = data.start;
-					filter.bookTitle = $("#bookTitle").val();
-					console.log(data);
-					let result = await bookService.getAll(filter);
-					console.log(result);
-					success(result);
-			},
+		ajax: async (data, success, failure) => {
+			let filter = {};
+			filter.countOnPage = data.length;
+			filter.skipCount = data.start;
+			filter.bookTitle = $('#bookTitle').val();
+			console.log(data);
+			let result = await bookService.getAll(filter);
+			console.log(result);
+			success(result);
+		},
 		columns: [
 			{
 				searchable: false,
@@ -51,16 +53,18 @@ $(function () {
 				data: null,
 				render: function (data, type, row, meta) {
 					return meta.row + meta.settings._iDisplayStart + 1;
-			} 
+				},
 			},
-			{ data: 'title', 
-			render: (data, type, row)=>{
-				return`${data}
+			{
+				data: 'title',
+				render: (data, type, row) => {
+					return `${data}
 				<button type="button" data-id="${row.id}" class="btn btn-primary ms-2 btn-openReview">
 					FeedBack
 					<span class="badge bg-secondary">${row.avgStars} stars</span>
-				</button>`
-			} },
+				</button>`;
+				},
+			},
 			{ data: 'description' },
 			{ data: 'publishedOn' },
 			{ data: 'category' },
@@ -73,6 +77,7 @@ $(function () {
 		],
 	});
 
+	//Таблица отображения просмотров
 	let reviewTable = $('#reviewTable').DataTable({
 		processing: true,
 		serverSide: true,
@@ -91,16 +96,14 @@ $(function () {
 		].join(''),
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
 		language: language,
-		ajax: 
-			 async (data, success, failure) => {
-
-					let filter = {};
-					filter.countOnPage = data.length;
-					filter.bookId=$("#reviewBookId").val();
-					filter.skipCount = data.start;
-					let result = await reviewService.getAll(filter);
-					success(result);
-			},
+		ajax: async (data, success, failure) => {
+			let filter = {};
+			filter.countOnPage = data.length;
+			filter.bookId = $('#reviewBookId').val();
+			filter.skipCount = data.start;
+			let result = await reviewService.getAll(filter);
+			success(result);
+		},
 
 		columns: [
 			{
@@ -110,7 +113,7 @@ $(function () {
 				data: null,
 				render: function (data, type, row, meta) {
 					return meta.row + meta.settings._iDisplayStart + 1;
-			} 
+				},
 			},
 			{ data: 'name' },
 			{ data: 'comment' },
@@ -118,13 +121,12 @@ $(function () {
 		],
 	});
 
-	$(document).on("click",".btn-openReview", function(){
-		let id=$(this).data("id")
-		$("#reviewBookId").val(id);
+	$(document).on('click', '.btn-openReview', function () {
+		let id = $(this).data('id');
+		$('#reviewBookId').val(id);
 		reviewTable.ajax.reload();
-		$("#reviewModal").modal("show")
-		// reviewTable.columns.adjust();
-		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();  
-	})
-	
+		$('#reviewModal').modal('show');
+		// reviewTable.columns.adjust(); "это может надо добавить чтобы развернуть таблицу документация DATA TABLE"
+		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+	});
 });
