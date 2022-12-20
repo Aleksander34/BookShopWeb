@@ -17,7 +17,7 @@ $(function () {
 	};
 
 	//Таблица отображения загрузки книг
-	$('#loadTable').DataTable({
+	let books = $('#loadTable').DataTable({
 		processing: true,
 		serverSide: true,
 		paging: true,
@@ -40,6 +40,7 @@ $(function () {
 			filter.countOnPage = data.length;
 			filter.skipCount = data.start;
 			filter.bookTitle = $('#bookTitle').val();
+			filter.authorName = $('#authorName').val();
 			console.log(data);
 			let result = await bookService.getAll(filter);
 			console.log(result);
@@ -115,7 +116,7 @@ $(function () {
 					return meta.row + meta.settings._iDisplayStart + 1;
 				},
 			},
-			{ data: 'name' },
+			{ data: 'userName' },
 			{ data: 'comment' },
 			{ data: 'numStars' },
 		],
@@ -128,5 +129,8 @@ $(function () {
 		$('#reviewModal').modal('show');
 		// reviewTable.columns.adjust(); "это может надо добавить чтобы развернуть таблицу документация DATA TABLE"
 		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+	});
+	$('#btnFilterApply').click(function () {
+		books.ajax.reload();
 	});
 });
