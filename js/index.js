@@ -16,6 +16,27 @@ $(function () {
 		},
 	};
 
+	let filters = {
+		bookTitle: '',
+		authorName: '',
+		publishedDateStart: null,
+		publishedDateEnd: null,
+	};
+
+	//airdate Picker включение и его свойства
+	new AirDatepicker('#publishedDate', {
+		range: true,
+		multipleDatesSeparator: ' - ',
+		onSelect: function ({ date, formattedDate, datepicker }) {
+			filters.publishedDateStart = getdate(formattedDate[0]);
+			//filters.publishedDateEnd = date[1] ? date[1].toDateString() : null;
+		},
+	});
+	function getdate(date) {
+		let data = date.split('.');
+		return new Date(+data[2], data[1] - 1, +data[0]);
+	}
+
 	//Таблица отображения загрузки книг
 	let books = $('#loadTable').DataTable({
 		processing: true,
@@ -36,13 +57,12 @@ $(function () {
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
 		language: language,
 		ajax: async (data, success, failure) => {
-			let filter = {};
-			filter.countOnPage = data.length;
-			filter.skipCount = data.start;
-			filter.bookTitle = $('#bookTitle').val();
-			filter.authorName = $('#authorName').val();
-			console.log(data);
-			let result = await bookService.getAll(filter);
+			filters.countOnPage = data.length;
+			filters.skipCount = data.start;
+			filters.bookTitle = $('#bookTitle').val();
+			filters.authorName = $('#authorName').val();
+
+			let result = await bookService.getAll(filters);
 			console.log(result);
 			success(result);
 		},
