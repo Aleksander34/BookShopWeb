@@ -1,7 +1,7 @@
 //импорт сервисов
 import bookService from './api/bookService.js';
 import reviewService from './api/reviewService.js';
-$(function () {
+$(async function () {
 	//Локализация таблицы
 	let language = {
 		emptyTable: 'нет данных',
@@ -19,8 +19,8 @@ $(function () {
 	let filters = {
 		bookTitle: '',
 		authorName: '',
-		publishedDateStart: null,
-		publishedDateEnd: null,
+		publishedDateStart: '',
+		publishedDateEnd: '',
 		priceStart: null,
 		priceEnd: null,
 	};
@@ -31,16 +31,10 @@ $(function () {
 		multipleDatesSeparator: ' - ',
 		onSelect: function ({ date, formattedDate, datepicker }) {
 			//определяем начальную и конечную дату берем их как элементы массива. Так они лежат согласно документации air date picker
-			filters.publishedDateStart = getdate(formattedDate[0]); //объект начальная дата равен нулевому элементу массива
-			//filters.publishedDateEnd = date[1] ? date[1].toDateString() : null;    //объект конечная дата равна первому элементу массива
+			filters.publishedDateStart = formattedDate[0]; //объект начальная дата равен нулевому элементу массива
+			filters.publishedDateEnd = formattedDate[1] ? formattedDate[1] : null; //объект конечная дата равна первому элементу массива
 		},
 	});
-
-	//Функция правит один день ошибки air datepicker
-	function getdate(date) {
-		let data = date.split('.');
-		return new Date(+data[2], data[1] - 1, +data[0]);
-	}
 
 	//Таблица отображения загрузки книг
 	let books = $('#loadTable').DataTable({
@@ -62,12 +56,21 @@ $(function () {
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
 		language: language,
 		ajax: async (data, success, failure) => {
+			let priceStart = $('#priceStart').val(); //входный данные фильтров
+			let priceEnd = $('#priceEnd').val(); //входный данные фильтров
+			if (priceStart) {
+				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
+				filters.priceStart = priceStart;
+			}
+			if (priceEnd) {
+				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
+				filters.priceEnd = priceEnd;
+			}
+
 			filters.countOnPage = data.length; //входный данные фильтров
 			filters.skipCount = data.start; //входный данные фильтров
 			filters.bookTitle = $('#bookTitle').val(); //входный данные фильтров
 			filters.authorName = $('#authorName').val(); //входный данные фильтров
-			filter.priceStart = $('#priceStart').val(); //входный данные фильтров
-			filter.priceEnd = $('#priceEnd').val(); //входный данные фильтров
 
 			let result = await bookService.getAll(filters);
 			console.log(result);
@@ -157,6 +160,15 @@ $(function () {
 		// reviewTable.columns.adjust(); "это может надо добавить чтобы развернуть таблицу документация DATA TABLE"
 		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
 	});
+
+	async function initCategories() {
+		let categories = await bookService.getCategories();
+		categories.forEach((x, y) => {
+			$('#category').append(`<option>${x}</option>`);
+		});
+	}
+
+	await initCategories();
 
 	// добавляе применение установленных фильтров после нажатия кнопки применить фильтр
 	$('#btnFilterApply').click(function () {
