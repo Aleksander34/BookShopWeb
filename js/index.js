@@ -15,12 +15,14 @@ $(function () {
 			previous: '<<',
 		},
 	};
-
+	//переменная фильтров. Сюда указываем начальные значения фильтров.
 	let filters = {
 		bookTitle: '',
 		authorName: '',
 		publishedDateStart: null,
 		publishedDateEnd: null,
+		priceStart: null,
+		priceEnd: null,
 	};
 
 	//airdate Picker включение и его свойства
@@ -28,10 +30,13 @@ $(function () {
 		range: true,
 		multipleDatesSeparator: ' - ',
 		onSelect: function ({ date, formattedDate, datepicker }) {
-			filters.publishedDateStart = getdate(formattedDate[0]);
-			//filters.publishedDateEnd = date[1] ? date[1].toDateString() : null;
+			//определяем начальную и конечную дату берем их как элементы массива. Так они лежат согласно документации air date picker
+			filters.publishedDateStart = getdate(formattedDate[0]); //объект начальная дата равен нулевому элементу массива
+			//filters.publishedDateEnd = date[1] ? date[1].toDateString() : null;    //объект конечная дата равна первому элементу массива
 		},
 	});
+
+	//Функция правит один день ошибки air datepicker
 	function getdate(date) {
 		let data = date.split('.');
 		return new Date(+data[2], data[1] - 1, +data[0]);
@@ -57,10 +62,12 @@ $(function () {
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
 		language: language,
 		ajax: async (data, success, failure) => {
-			filters.countOnPage = data.length;
-			filters.skipCount = data.start;
-			filters.bookTitle = $('#bookTitle').val();
-			filters.authorName = $('#authorName').val();
+			filters.countOnPage = data.length; //входный данные фильтров
+			filters.skipCount = data.start; //входный данные фильтров
+			filters.bookTitle = $('#bookTitle').val(); //входный данные фильтров
+			filters.authorName = $('#authorName').val(); //входный данные фильтров
+			filter.priceStart = $('#priceStart').val(); //входный данные фильтров
+			filter.priceEnd = $('#priceEnd').val(); //входный данные фильтров
 
 			let result = await bookService.getAll(filters);
 			console.log(result);
@@ -150,6 +157,8 @@ $(function () {
 		// reviewTable.columns.adjust(); "это может надо добавить чтобы развернуть таблицу документация DATA TABLE"
 		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
 	});
+
+	// добавляе применение установленных фильтров после нажатия кнопки применить фильтр
 	$('#btnFilterApply').click(function () {
 		books.ajax.reload();
 	});
