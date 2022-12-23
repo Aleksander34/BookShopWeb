@@ -26,8 +26,8 @@
 					</li>
 					<li>
 						<form class="d-flex">
-							<input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" />
-							<button class="btn btn-outline-success" type="submit">Искать</button>
+							<input id="searchQuerry" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" />
+							<button id="search" class="btn btn-outline-success" type="button">Искать</button>
 						</form>
 					</li>
 				</ul>
@@ -55,7 +55,7 @@
 				<div class="col-2">
 					<label for="exampleFormControlInput1" class="form-label">Category search</label>
 					<select id="category" class="form-select">
-						<option></option>
+						<option value="" selected>Все категории</option>
 					</select>
 				</div>
 				<div class="col-3">

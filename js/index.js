@@ -36,6 +36,7 @@ $(async function () {
 		priceStart: null,
 		priceEnd: null,
 		category: '',
+		search: '',
 	};
 
 	//Таблица отображения загрузки книг
@@ -68,6 +69,7 @@ $(async function () {
 				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
 				filters.priceEnd = priceEnd;
 			}
+			filters.search = $('#searchQuerry').val();
 			filters.category = $('#category').val();
 			filters.countOnPage = data.length; //входный данные фильтров
 			filters.skipCount = data.start; //входный данные фильтров
@@ -174,6 +176,9 @@ $(async function () {
 
 	// добавляе применение установленных фильтров после нажатия кнопки применить фильтр
 	$('#btnFilterApply').click(function () {
+		books.ajax.reload();
+	});
+	$('#search').click(function () {
 		books.ajax.reload();
 	});
 });
