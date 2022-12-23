@@ -15,15 +15,6 @@ $(async function () {
 			previous: '<<',
 		},
 	};
-	//переменная фильтров. Сюда указываем начальные значения фильтров.
-	let filters = {
-		bookTitle: '',
-		authorName: '',
-		publishedDateStart: '',
-		publishedDateEnd: '',
-		priceStart: null,
-		priceEnd: null,
-	};
 
 	//airdate Picker включение и его свойства
 	new AirDatepicker('#publishedDate', {
@@ -35,6 +26,17 @@ $(async function () {
 			filters.publishedDateEnd = formattedDate[1] ? formattedDate[1] : null; //объект конечная дата равна первому элементу массива
 		},
 	});
+
+	//переменная фильтров. Сюда указываем начальные значения фильтров.
+	let filters = {
+		bookTitle: '',
+		authorName: '',
+		publishedDateStart: '',
+		publishedDateEnd: '',
+		priceStart: null,
+		priceEnd: null,
+		category: '',
+	};
 
 	//Таблица отображения загрузки книг
 	let books = $('#loadTable').DataTable({
@@ -66,14 +68,12 @@ $(async function () {
 				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
 				filters.priceEnd = priceEnd;
 			}
-
+			filters.category = $('#category').val();
 			filters.countOnPage = data.length; //входный данные фильтров
 			filters.skipCount = data.start; //входный данные фильтров
 			filters.bookTitle = $('#bookTitle').val(); //входный данные фильтров
 			filters.authorName = $('#authorName').val(); //входный данные фильтров
-
 			let result = await bookService.getAll(filters);
-			console.log(result);
 			success(result);
 		},
 		columns: [
@@ -152,6 +152,7 @@ $(async function () {
 		],
 	});
 
+	//обработка клика открытия таблицы просмотров в книге
 	$(document).on('click', '.btn-openReview', function () {
 		let id = $(this).data('id');
 		$('#reviewBookId').val(id);
@@ -161,6 +162,7 @@ $(async function () {
 		// $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
 	});
 
+	// функция чтения названий категорий в выпадающий список
 	async function initCategories() {
 		let categories = await bookService.getCategories();
 		categories.forEach((x, y) => {

@@ -18,6 +18,7 @@ class BookService {
 	}
 
 	async getCategories() {
+		// метод GetCategories на сервере выбирает категории книг(distinсt отсеивает повторяющиеся значения)
 		let result = null;
 		await axios
 			.get(this.url + '/GetCategories')
