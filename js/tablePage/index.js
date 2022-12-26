@@ -1,6 +1,6 @@
 //импорт сервисов
-import bookService from './api/bookService.js';
-import reviewService from './api/reviewService.js';
+import bookService from '../api/bookService.js';
+import reviewService from '../api/reviewService.js';
 $(async function () {
 	//Локализация таблицы
 	let language = {
