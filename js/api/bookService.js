@@ -54,5 +54,28 @@ class BookService {
 			});
 		return result;
 	}
+
+	async previewBooks(file) {
+		let formData = new FormData();
+		formData.append('input', file);
+
+		const config = {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		};
+
+		let result = null;
+		await axios
+			.post(this.url + '/PreviewBooks', formData, config)
+			.then(function (response) {
+				result = response.data;
+				console.log(result);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		return result;
+	}
 }
 export default new BookService();

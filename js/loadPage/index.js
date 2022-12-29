@@ -2,6 +2,7 @@
 import bookService from '../api/bookService.js';
 import reviewService from '../api/reviewService.js';
 $(async function () {
+	let file = null; // переменная файла который загружают
 	//Локализация таблицы
 	let language = {
 		emptyTable: 'нет данных',
@@ -17,58 +18,53 @@ $(async function () {
 	};
 
 	//Таблица отображения загрузки книг
-	// let books = $('#loadTable').DataTable({
-	// 	processing: true,
-	// 	serverSide: true,
-	// 	paging: true,
-	// 	ordering: false,
-	// 	searching: false,
-	// 	dom: [
-	// 		"<'row'<'col-md-12'f>>",
-	// 		"<'row'<'col-md-12't>>",
-	// 		"<'row mt-2'",
-	// 		"<'col-lg-1 col-xs-12'<'float-left text-center data-tables-refresh'B>>",
-	// 		"<'col-lg-3 col-xs-12'<'float-left text-center'i>>",
-	// 		"<'col-lg-3 col-xs-12'<'text-center'l>>",
-	// 		"<'col-lg-5 col-xs-12'<'float-right'p>>",
-	// 		'>',
-	// 	].join(''),
-	// 	buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
-	// 	language: language,
-	// 	ajax: async (data, success, failure) => {},
-	// 	columns: [
-	// 		{
-	// 			searchable: false,
-	// 			orderable: false,
-	// 			targets: 0,
-	// 			data: null,
-	// 			render: function (data, type, row, meta) {
-	// 				return meta.row + meta.settings._iDisplayStart + 1;
-	// 			},
-	// 		},
-	// 		{
-	// 			data: 'title',
-	// 			render: (data, type, row) => {
-	// 				return `${data}
-	// 			<button type="button" data-id="${row.id}" class="btn btn-primary ms-2 btn-openReview">
-	// 				FeedBack
-	// 				<span class="badge bg-secondary">${row.avgStars} stars</span>
-	// 			</button>`;
-	// 			},
-	// 		},
-	// 		{ data: 'description' },
-	// 		{ data: 'publishedOn' },
-	// 		{ data: 'category' },
-	// 		{ data: 'imageUrl' },
-	// 		{ data: 'authors' },
-	// 		{ data: 'price' },
-	// 		{ data: 'property.color' },
-	// 		{ data: 'property.bindingType' },
-	// 		{ data: 'property.condition' },
-	// 	],
-	// });
+	let books = $('#loadTable').DataTable({
+		processing: true,
+		serverSide: true,
+		paging: true,
+		ordering: false,
+		searching: false,
+		dom: [
+			"<'row'<'col-md-12'f>>",
+			"<'row'<'col-md-12't>>",
+			"<'row mt-2'",
+			"<'col-lg-1 col-xs-12'<'float-left text-center data-tables-refresh'B>>",
+			"<'col-lg-3 col-xs-12'<'float-left text-center'i>>",
+			"<'col-lg-3 col-xs-12'<'text-center'l>>",
+			"<'col-lg-5 col-xs-12'<'float-right'p>>",
+			'>',
+		].join(''),
+		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
+		language: language,
+		ajax: async (data, success, failure) => {
+			let result = await bookService.previewBooks(file);
+			success(result);
+		},
+		columns: [
+			{
+				searchable: false,
+				orderable: false,
+				targets: 0,
+				data: null,
+				render: function (data, type, row, meta) {
+					return meta.row + meta.settings._iDisplayStart + 1;
+				},
+			},
+			{
+				data: 'title',
+			},
+			{ data: 'description' },
+			{ data: 'publishedOn' },
+			{ data: 'category' },
+			{ data: 'imageUrl' },
+			{ data: 'authors' },
+			{ data: 'price' },
+			{ data: 'property.color' },
+			{ data: 'property.bindingType' },
+			{ data: 'property.condition' },
+		],
+	});
 
-	let file = null;
 	$('#file').change(async function () {
 		if ($(this).get(0).files.length > 0) {
 			let fileName = $(this).get(0).files[0].name;
@@ -78,6 +74,7 @@ $(async function () {
 				return;
 			}
 			file = $(this).get(0).files[0];
+			books.ajax.reload().draw(false);
 		}
 	});
 	$('#load').click(async function () {
