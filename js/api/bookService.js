@@ -77,5 +77,30 @@ class BookService {
 			});
 		return result;
 	}
+
+	async remove(id) {
+		console.log(id);
+		await axios
+			.post(this.url + '/Remove?id=' + id)
+			.then(function (response) {
+				result = response;
+				console.log(result);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	async update(input) {
+		await axios
+			.post(this.url + '/Update', input)
+			.then(function (response) {
+				result = response;
+				console.log(result);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
 }
 export default new BookService();

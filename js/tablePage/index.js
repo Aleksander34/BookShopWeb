@@ -107,7 +107,23 @@ $(async function () {
 			{ data: 'property.color' },
 			{ data: 'property.bindingType' },
 			{ data: 'property.condition' },
+			{
+				searchable: false,
+				orderable: false,
+				data: null,
+				defaultContent: '',
+				render: function (data, type, row, meta) {
+					return `<div class="d-flex"><button data-id="${row.id}" class=" delete btn btn-sm bg-danger me-2">delete</button> <button data-id="${row.id}" class="edit btn btn-sm bg-secondary">edit</button></div>`;
+				},
+			},
 		],
+	});
+
+	$(document).on('click', '.delete', async function () {
+		// удаление
+		let bookId = $(this).data('id');
+		await bookService.remove(bookId);
+		books.ajax.reload(); // обновление
 	});
 
 	//Таблица отображения просмотров
