@@ -129,21 +129,64 @@
 				</div>
 
 				<!-- модальное окно редактирования -->
-				<div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Edit Book</h5>
+								<h5 class="modal-title" id="editModalLabel">Edit Book</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<div class="mb-3">
-									<label for="exampleFormControlInput1" class="form-label">Email address</label>
-									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+									<label for="exampleFormControlInput1" class="form-label">Title</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the title" />
 								</div>
 								<div class="mb-3">
-									<label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+									<label for="exampleFormControlTextarea1" class="form-label">Description</label>
 									<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="">Выбор даты</label>
+									<input id="publishedDate" class="form-control" type="text" name="" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Category</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the category" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">ImageUrl</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the imageUrl" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Author/s</label>
+									<select class="form-control" multiple="multiple">
+										<option selected="selected">orange</option>
+										<option>white</option>
+										<option selected="selected">purple</option>
+									</select>
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Price</label>
+									<div class="input-group mb-3">
+										<input type="text" class="form-control w-75" aria-label="" />
+										<select class="form-select" id="inputGroupSelect01">
+											<option selected>₽ RUB</option>
+											<option value="1">$ USD</option>
+											<option value="2">€ EUR</option>
+										</select>
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Color</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the color" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Binding type</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the binding type" />
+								</div>
+								<div class="mb-3">
+									<label for="exampleFormControlInput1" class="form-label">Condition</label>
+									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the condition" />
 								</div>
 							</div>
 							<div class="modal-footer">

@@ -113,7 +113,7 @@ $(async function () {
 				data: null,
 				defaultContent: '',
 				render: function (data, type, row, meta) {
-					return `<div class="d-flex"><button data-id="${row.id}" class=" delete btn btn-sm bg-danger me-2">delete</button> <button data-id="${row.id}" class="edit btn btn-sm bg-secondary">edit</button></div>`;
+					return `<div class="d-flex"><button data-id="${row.id}" class=" delete btn btn-sm bg-danger me-2">delete</button> <button data-id="${row.id}" class="edit btn btn-sm bg-secondary" data-bs-toggle="modal" data-bs-target="#editModal">edit</button></div>`;
 				},
 			},
 		],
