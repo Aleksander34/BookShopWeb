@@ -1,2 +1,10 @@
 //pages
 @import 'pages/_loadPage';
+
+.air-datepicker-global-container {
+	z-index: 999999 !important;
+}
+
+.select2-container--open {
+	z-index: 9999999;
+}

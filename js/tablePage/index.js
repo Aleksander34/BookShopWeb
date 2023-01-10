@@ -27,6 +27,9 @@ $(async function () {
 		},
 	});
 
+	//airdate Picker включение и его свойства для модального окна редактирования
+	new AirDatepicker('#editDate');
+
 	//переменная фильтров. Сюда указываем начальные значения фильтров.
 	let filters = {
 		bookTitle: '',
@@ -196,5 +199,26 @@ $(async function () {
 	});
 	$('#search').click(function () {
 		books.ajax.reload();
+	});
+
+	$('#editCategory').select2({
+		tags: true,
+		width: '100%',
+		placeholder: 'Select a state',
+		allowClear: true,
+		ajax: {
+			transport: function (params, success, failure) {
+				bookService.getCategories().then(function (result) {
+					console.log(result);
+					success({
+						results: result.map((x) => {
+							return { value: x, id: x };
+						}),
+					});
+				});
+			},
+		},
+		templateResult: (data) => data.value,
+		templateSelection: (data) => data.value,
 	});
 });
