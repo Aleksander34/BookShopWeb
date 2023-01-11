@@ -1,7 +1,7 @@
 .air-datepicker-global-container {
-  z-index: 999999 !important;
+	z-index: 999999 !important;
 }
 
-.select2-container--open {
+/* .select2-container--open {
   z-index: 9999999;
-}/*# sourceMappingURL=style.css.map */
+}# sourceMappingURL=style.css.map */

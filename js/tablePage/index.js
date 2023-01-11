@@ -1,6 +1,7 @@
 //импорт сервисов
 import bookService from '../api/bookService.js';
 import reviewService from '../api/reviewService.js';
+import authorService from '../api/authorService.js';
 $(async function () {
 	//Локализация таблицы
 	let language = {
@@ -218,7 +219,61 @@ $(async function () {
 				});
 			},
 		},
+		createTag: function (params) {
+			var term = $.trim(params.term);
+
+			if (term === '') {
+				return null;
+			}
+
+			return {
+				id: term,
+				value: term,
+			};
+		},
 		templateResult: (data) => data.value,
 		templateSelection: (data) => data.value,
+		dropdownParent: $('#editModal'),
+	});
+
+	$('#editAuthors').select2({
+		tags: true,
+		width: '100%',
+		placeholder: 'Select a state',
+		allowClear: true,
+		ajax: {
+			transport: function (params, success, failure) {
+				authorService.getAll().then(function (result) {
+					console.log(result);
+					success({
+						results: result.map((x) => {
+							return { value: x.name, id: x.name };
+						}),
+					});
+				});
+			},
+		},
+		createTag: function (params) {
+			var term = $.trim(params.term);
+
+			if (term === '') {
+				return null;
+			}
+
+			return {
+				id: term,
+				value: term,
+			};
+		},
+		templateResult: (data) => data.value,
+		templateSelection: (data) => data.value,
+		dropdownParent: $('#editModal'),
+	});
+
+	var cleave = new Cleave('#editPrice', {
+		numeral: true,
+		numeralPositiveOnly: true,
+		prefix: '$',
+		numeralThousandsGroupStyle: 'thousand',
 	});
 });

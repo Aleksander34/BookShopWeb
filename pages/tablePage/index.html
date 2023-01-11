@@ -129,13 +129,6 @@
 					</div>
 				</div>
 
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">Category</label>
-					<select id="editCategory" class="form-control">
-						<option></option>
-					</select>
-				</div>
-
 				<!-- модальное окно редактирования -->
 				<div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
 					<div class="modal-dialog">
@@ -157,28 +150,26 @@
 									<label class="form-label" for="">Выбор даты</label>
 									<input id="editDate" class="form-control" type="text" name="" />
 								</div>
-								<!-- <div class="mb-3">
+								<div class="mb-3">
 									<label for="exampleFormControlInput1" class="form-label">Category</label>
 									<select id="editCategory" class="form-control">
 										<option></option>
 									</select>
-								</div> -->
+								</div>
 								<div class="mb-3">
 									<label for="exampleFormControlInput1" class="form-label">ImageUrl</label>
 									<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter the imageUrl" />
 								</div>
 								<div class="mb-3">
 									<label for="exampleFormControlInput1" class="form-label">Author/s</label>
-									<select class="form-control" multiple="multiple">
-										<option selected="selected">orange</option>
-										<option>white</option>
-										<option selected="selected">purple</option>
+									<select id="editAuthors" class="form-control" multiple="multiple">
+										<option></option>
 									</select>
 								</div>
 								<div class="mb-3">
 									<label for="exampleFormControlInput1" class="form-label">Price</label>
 									<div class="input-group mb-3">
-										<input type="text" class="form-control w-75" aria-label="" />
+										<input type="text" id="editPrice" class="form-control w-75" aria-label="" />
 										<select class="form-select" id="inputGroupSelect01">
 											<option selected>₽ RUB</option>
 											<option value="1">$ USD</option>
@@ -284,6 +275,7 @@
 		></script>
 		<script src="/airDatePicker/index.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 		<script src="/js/tablePage/index.js" type="module"></script>
 	</body>
 </html>
