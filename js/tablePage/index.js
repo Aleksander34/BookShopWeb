@@ -130,6 +130,26 @@ $(async function () {
 		books.ajax.reload(); // обновление
 	});
 
+	$(document).on('click', '.edit', async function () {
+		// редактирование
+		let bookId = $(this).data('id');
+		let book=await bookService.get(bookId);
+		console.log(book);
+		$('#title').val(book.title);
+		$('#description').val(book.description);
+		$('#editDate').val(book.publishedOn);
+		$('#editCategory').val(book.category);
+		$('#imageUrl').val(book.imageUrl);
+		$('#editAuthors').val(book.authors);
+		$('#editPrice').val(book.price);
+		$('#color').val(book.property.color);
+		$('#bindingType').val(book.property.bindingType);
+		$('#condition').val(book.property.condition);
+	});
+
+
+
+
 	//Таблица отображения просмотров
 	let reviewTable = $('#reviewTable').DataTable({
 		processing: true,
@@ -270,10 +290,55 @@ $(async function () {
 		dropdownParent: $('#editModal'),
 	});
 
-	var cleave = new Cleave('#editPrice', {
+	let cleave = new Cleave('#editPrice', {
 		numeral: true,
 		numeralPositiveOnly: true,
-		prefix: '$',
+		prefix: '₽',
 		numeralThousandsGroupStyle: 'thousand',
 	});
+
+	$('#currencyChoise').change(function(){
+		let value = $(this).val();
+		console.log(cleave);
+		switch (value){
+			case 'rub':
+				cleave.destroy();
+					cleave = new Cleave('#editPrice', {
+					numeral: true,
+					numeralPositiveOnly: true,
+					prefix: '₽',
+					numeralThousandsGroupStyle: 'thousand',
+				});
+				break;
+			case 'usd':
+				cleave.destroy();
+				cleave = new Cleave('#editPrice', {
+				numeral: true,
+				numeralPositiveOnly: true,
+				prefix: '$',
+				numeralThousandsGroupStyle: 'thousand',
+			});
+					break;
+			case 'eur':
+				cleave.destroy();
+				cleave = new Cleave('#editPrice', {
+				numeral: true,
+				numeralPositiveOnly: true,
+				prefix: '€',
+				numeralThousandsGroupStyle: 'thousand',
+			});
+					break;
+		} 
+		
+	})
+
+	$('#saveBtn').click(async function(){
+		let bookDto=$('#editForm').serializeJSON();
+		bookDto.Property=$('#editProperty').serializeJSON();
+		bookDto.Authors=$('#editAuthors').val().join(',');
+		bookDto.Price=+bookDto.Price.substring(1).replace(',','');  //+numerable
+		console.log(bookDto);
+		await bookService.update(bookDto);
+	})
+
 });

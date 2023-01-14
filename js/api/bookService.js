@@ -102,5 +102,21 @@ class BookService {
 				console.log(error);
 			});
 	}
+
+	async get(id) {
+		console.log(id);
+		let result = null;
+		await axios
+			.get(this.url + '/Get?id=' + id)
+			.then(function (response) {
+				result = response.data;
+				console.log(result);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+			return result;
+	}
+
 }
 export default new BookService();
