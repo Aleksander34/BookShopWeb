@@ -138,16 +138,37 @@ $(async function () {
 		$('#title').val(book.title);
 		$('#description').val(book.description);
 		$('#editDate').val(book.publishedOn);
-		$('#editCategory').val(book.category);
 		$('#imageUrl').val(book.imageUrl);
-		$('#editAuthors').val(book.authors);
-		$('#editPrice').val(book.price);
+		$('#editPrice').val('₽'+book.price);
 		$('#color').val(book.property.color);
 		$('#bindingType').val(book.property.bindingType);
 		$('#condition').val(book.property.condition);
+
+		if ($('#editCategory').find("option[value='" + book.category + "']").length) {
+			$('#editCategory').val(book.category).trigger('change');
+	} else { 
+			// Create a DOM Option and pre-select by default
+			var newOption = new Option(book.category, book.category, true, true);
+			// Append it to the select
+			$('#editCategory').append(newOption).trigger('change');
+	} 
+
+	$('#id').val(bookId)
+
+	let authors = book.authors.split(',');
+	for(let author of authors)
+	{
+		if ($('#editAuthors').find("option[value='" + author + "']").length) {
+			$('#editAuthors').val(author).trigger('change');
+	} else { 
+			// Create a DOM Option and pre-select by default
+			var newOption = new Option(author, author, true, true);
+			// Append it to the select
+			$('#editAuthors').append(newOption).trigger('change');
+	}
+	}
+
 	});
-
-
 
 
 	//Таблица отображения просмотров
@@ -233,7 +254,7 @@ $(async function () {
 					console.log(result);
 					success({
 						results: result.map((x) => {
-							return { value: x, id: x };
+							return { text: x, id: x };
 						}),
 					});
 				});
@@ -248,11 +269,11 @@ $(async function () {
 
 			return {
 				id: term,
-				value: term,
+				text: term,
 			};
 		},
-		templateResult: (data) => data.value,
-		templateSelection: (data) => data.value,
+		templateResult: (data) => data.text,
+		templateSelection: (data) => data.text,
 		dropdownParent: $('#editModal'),
 	});
 
@@ -267,7 +288,7 @@ $(async function () {
 					console.log(result);
 					success({
 						results: result.map((x) => {
-							return { value: x.name, id: x.name };
+							return { text: x.name, id: x.name };
 						}),
 					});
 				});
@@ -282,11 +303,11 @@ $(async function () {
 
 			return {
 				id: term,
-				value: term,
+				text: term,
 			};
 		},
-		templateResult: (data) => data.value,
-		templateSelection: (data) => data.value,
+		templateResult: (data) => data.text,
+		templateSelection: (data) => data.text,
 		dropdownParent: $('#editModal'),
 	});
 
@@ -339,6 +360,29 @@ $(async function () {
 		bookDto.Price=+bookDto.Price.substring(1).replace(',','');  //+numerable
 		console.log(bookDto);
 		await bookService.update(bookDto);
+		$('#editModal').modal('hide');
+		books.ajax.reload();
 	})
+
+const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 
 });
