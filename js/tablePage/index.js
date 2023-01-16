@@ -2,6 +2,7 @@
 import bookService from '../api/bookService.js';
 import reviewService from '../api/reviewService.js';
 import authorService from '../api/authorService.js';
+import categoryService from '../api/categoryService.js';
 $(async function () {
 	//Локализация таблицы
 	let language = {
@@ -133,43 +134,40 @@ $(async function () {
 	$(document).on('click', '.edit', async function () {
 		// редактирование
 		let bookId = $(this).data('id');
-		let book=await bookService.get(bookId);
+		let book = await bookService.get(bookId);
 		console.log(book);
 		$('#title').val(book.title);
 		$('#description').val(book.description);
 		$('#editDate').val(book.publishedOn);
 		$('#imageUrl').val(book.imageUrl);
-		$('#editPrice').val('₽'+book.price);
+		$('#editPrice').val('₽' + book.price);
 		$('#color').val(book.property.color);
 		$('#bindingType').val(book.property.bindingType);
 		$('#condition').val(book.property.condition);
 
 		if ($('#editCategory').find("option[value='" + book.category + "']").length) {
 			$('#editCategory').val(book.category).trigger('change');
-	} else { 
+		} else {
 			// Create a DOM Option and pre-select by default
 			var newOption = new Option(book.category, book.category, true, true);
 			// Append it to the select
 			$('#editCategory').append(newOption).trigger('change');
-	} 
+		}
 
-	$('#id').val(bookId)
+		$('#id').val(bookId);
 
-	let authors = book.authors.split(',');
-	for(let author of authors)
-	{
-		if ($('#editAuthors').find("option[value='" + author + "']").length) {
-			$('#editAuthors').val(author).trigger('change');
-	} else { 
-			// Create a DOM Option and pre-select by default
-			var newOption = new Option(author, author, true, true);
-			// Append it to the select
-			$('#editAuthors').append(newOption).trigger('change');
-	}
-	}
-
+		let authors = book.authors.split(',');
+		for (let author of authors) {
+			if ($('#editAuthors').find("option[value='" + author + "']").length) {
+				$('#editAuthors').val(author).trigger('change');
+			} else {
+				// Create a DOM Option and pre-select by default
+				var newOption = new Option(author, author, true, true);
+				// Append it to the select
+				$('#editAuthors').append(newOption).trigger('change');
+			}
+		}
 	});
-
 
 	//Таблица отображения просмотров
 	let reviewTable = $('#reviewTable').DataTable({
@@ -318,13 +316,13 @@ $(async function () {
 		numeralThousandsGroupStyle: 'thousand',
 	});
 
-	$('#currencyChoise').change(function(){
+	$('#currencyChoise').change(function () {
 		let value = $(this).val();
 		console.log(cleave);
-		switch (value){
+		switch (value) {
 			case 'rub':
 				cleave.destroy();
-					cleave = new Cleave('#editPrice', {
+				cleave = new Cleave('#editPrice', {
 					numeral: true,
 					numeralPositiveOnly: true,
 					prefix: '₽',
@@ -334,55 +332,189 @@ $(async function () {
 			case 'usd':
 				cleave.destroy();
 				cleave = new Cleave('#editPrice', {
-				numeral: true,
-				numeralPositiveOnly: true,
-				prefix: '$',
-				numeralThousandsGroupStyle: 'thousand',
-			});
-					break;
+					numeral: true,
+					numeralPositiveOnly: true,
+					prefix: '$',
+					numeralThousandsGroupStyle: 'thousand',
+				});
+				break;
 			case 'eur':
 				cleave.destroy();
 				cleave = new Cleave('#editPrice', {
-				numeral: true,
-				numeralPositiveOnly: true,
-				prefix: '€',
-				numeralThousandsGroupStyle: 'thousand',
-			});
-					break;
-		} 
-		
-	})
+					numeral: true,
+					numeralPositiveOnly: true,
+					prefix: '€',
+					numeralThousandsGroupStyle: 'thousand',
+				});
+				break;
+		}
+	});
 
-	$('#saveBtn').click(async function(){
-		let bookDto=$('#editForm').serializeJSON();
-		bookDto.Property=$('#editProperty').serializeJSON();
-		bookDto.Authors=$('#editAuthors').val().join(',');
-		bookDto.Price=+bookDto.Price.substring(1).replace(',','');  //+numerable
+	$('#saveBtn').click(async function () {
+		let bookDto = $('#editForm').serializeJSON();
+		bookDto.Property = $('#editProperty').serializeJSON();
+		bookDto.Authors = $('#editAuthors').val().join(',');
+		bookDto.Price = +bookDto.Price.substring(1).replace(',', ''); //+numerable
 		console.log(bookDto);
 		await bookService.update(bookDto);
 		$('#editModal').modal('hide');
 		books.ajax.reload();
-	})
+	});
 
-const ctx = document.getElementById('myChart');
+	const ctx = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+	categoryService.getCategoryChart().then(function (result) {
+		let categories = result.map((x) => x.category);
+		let counts = result.map((x) => x.count);
+		new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: categories,
+				datasets: [
+					{
+						label: 'книги по категориям',
+						data: counts,
+						borderWidth: 1,
+						backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+						borderColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)'],
+					},
+				],
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true,
+					},
+				},
+			},
+		});
+	});
 
+	const ctx2 = document.getElementById('myChart2');
+	bookService.GetBookOnDate().then(function (result) {
+		let published = result.map((x) => x.published);
+		let counts = result.map((x) => x.count);
+		new Chart(ctx2, {
+			type: 'line',
+			data: {
+				labels: published,
+				datasets: [
+					{
+						label: 'книги по категориям',
+						data: counts,
+						borderWidth: 1,
+						backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+						borderColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)'],
+					},
+				],
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true,
+					},
+				},
+				plugins: {
+					zoom: {
+						// Container for pan options
+						pan: {
+							// Boolean to enable panning
+							enabled: true,
+
+							// Panning directions. Remove the appropriate direction to disable
+							// Eg. 'y' would only allow panning in the y direction
+							// A function that is called as the user is panning and returns the
+							// available directions can also be used:
+							//   mode: function({ chart }) {
+							//     return 'xy';
+							//   },
+							mode: 'xy',
+
+							rangeMin: {
+								// Format of min pan range depends on scale type
+								x: null,
+								y: null,
+							},
+							rangeMax: {
+								// Format of max pan range depends on scale type
+								x: null,
+								y: null,
+							},
+
+							// On category scale, factor of pan velocity
+							speed: 20,
+
+							// Minimal pan distance required before actually applying pan
+							threshold: 10,
+
+							// Function called while the user is panning
+							onPan: function ({ chart }) {
+								console.log(`I'm panning!!!`);
+							},
+							// Function called once panning is completed
+							onPanComplete: function ({ chart }) {
+								console.log(`I was panned!!!`);
+							},
+						},
+
+						// Container for zoom options
+						zoom: {
+							// Boolean to enable zooming
+							enabled: true,
+
+							// Enable drag-to-zoom behavior
+							drag: true,
+
+							// Drag-to-zoom effect can be customized
+							// drag: {
+							// 	 borderColor: 'rgba(225,225,225,0.3)'
+							// 	 borderWidth: 5,
+							// 	 backgroundColor: 'rgb(225,225,225)',
+							// 	 animationDuration: 0
+							// },
+
+							// Zooming directions. Remove the appropriate direction to disable
+							// Eg. 'y' would only allow zooming in the y direction
+							// A function that is called as the user is zooming and returns the
+							// available directions can also be used:
+							//   mode: function({ chart }) {
+							//     return 'xy';
+							//   },
+							mode: 'xy',
+
+							rangeMin: {
+								// Format of min zoom range depends on scale type
+								x: null,
+								y: null,
+							},
+							rangeMax: {
+								// Format of max zoom range depends on scale type
+								x: null,
+								y: null,
+							},
+
+							// Speed of zoom via mouse wheel
+							// (percentage of zoom on a wheel event)
+							speed: 0.1,
+
+							// Minimal zoom distance required before actually applying zoom
+							threshold: 2,
+
+							// On category scale, minimal zoom level before actually applying zoom
+							sensitivity: 3,
+
+							// Function called while the user is zooming
+							onZoom: function ({ chart }) {
+								console.log(`I'm zooming!!!`);
+							},
+							// Function called once zooming is completed
+							onZoomComplete: function ({ chart }) {
+								console.log(`I was zoomed!!!`);
+							},
+						},
+					},
+				},
+			},
+		});
+	});
 });

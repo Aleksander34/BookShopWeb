@@ -115,8 +115,21 @@ class BookService {
 			.catch(function (error) {
 				console.log(error);
 			});
-			return result;
+		return result;
 	}
 
+	async GetBookOnDate() {
+		let result = null;
+		await axios
+			.get(this.url + '/GetBookOnDate')
+			.then(function (response) {
+				result = response.data;
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		return result;
+	}
 }
 export default new BookService();
