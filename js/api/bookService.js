@@ -118,10 +118,10 @@ class BookService {
 		return result;
 	}
 
-	async GetBookOnDate() {
+	async GetBookOnDate(input) {
 		let result = null;
 		await axios
-			.get(this.url + '/GetBookOnDate')
+			.get(this.url + '/GetBookOnDate?input=' + input)
 			.then(function (response) {
 				result = response.data;
 				console.log(response);
