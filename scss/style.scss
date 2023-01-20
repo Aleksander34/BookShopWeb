@@ -8,3 +8,13 @@
 .select2-container--open {
 	z-index: 9999999;
 }
+
+.full {
+	min-height: 100%;
+	min-width: 100%;
+	position: absolute;
+	z-index: 9999999;
+	left: 0;
+	top: 0;
+	background-color: aliceblue;
+}

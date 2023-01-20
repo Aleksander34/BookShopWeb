@@ -125,10 +125,23 @@ $(async function () {
 	});
 
 	$(document).on('click', '.delete', async function () {
-		// удаление
-		let bookId = $(this).data('id');
-		await bookService.remove(bookId);
-		books.ajax.reload(); // обновление
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				// удаление
+				let bookId = $(this).data('id');
+				await bookService.remove(bookId);
+				books.ajax.reload(); // обновление
+				Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+			}
+		});
 	});
 
 	$(document).on('click', '.edit', async function () {
@@ -445,5 +458,8 @@ $(async function () {
 			chart2.data.datasets[0].data = counts;
 			chart2.update();
 		});
+	});
+	$('#chartFull').click(function () {
+		$(this).parent().toggleClass('full');
 	});
 });
