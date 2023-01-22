@@ -1,4 +1,4 @@
-
+import Session from "../Session.js";
 class AccountService {
 	constructor() {
 		this.url = 'https://localhost:7160/api/Account';
@@ -11,6 +11,10 @@ class AccountService {
 			.then(function (response) {
 				result = response.data;
 				console.log(response);
+				axios.defaults.headers.common['Authorization'] = 'Bearer '+result.token;
+				Session.name=result.name;
+				Session.token=result.token;
+				Session.role=result.role;
 			})
 			.catch(function (error) {
 				console.log(error);

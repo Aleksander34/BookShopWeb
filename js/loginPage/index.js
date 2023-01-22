@@ -5,7 +5,7 @@ $(function () {
 		let token = await accountService.login(userDto);
 
 		if (token != null) {
-			window.location.href = 'http://127.0.0.1:5500/pages/tablePage/index.html'; //меняем путь после входа
+			location.href = '/pages/tablePage/index.html'; //меняем путь после входа
 		}
 	});
 
@@ -14,7 +14,7 @@ $(function () {
 		userDto.Role=+userDto.Role;
 		let token = await accountService.registration(userDto);
 		if (token != null) {
-			window.location.href = 'http://127.0.0.1:5500/pages/tablePage/index.html'; //меняем путь после входа
+			location.href = '/pages/tablePage/index.html'; //меняем путь после входа
 		}
 	});
 });

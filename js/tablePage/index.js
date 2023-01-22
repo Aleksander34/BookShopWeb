@@ -462,4 +462,9 @@ $(async function () {
 	$('#chartFull').click(function () {
 		$(this).parent().toggleClass('full');
 	});
+
+$('#exit').click(function(){
+	location.href='/pages/loginPage/index.html';
+})
+
 });
