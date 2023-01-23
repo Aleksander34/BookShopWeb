@@ -1,257 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/airDatePicker/index.css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  </head>
-  <body>
-    <h1 class="text-center">BookShop</h1>
-    <!-- Меню -->
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd">
-      <div class="container-fluid">
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/loadPage/index.html">Load Books</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/pages/tablePage/index.html">Table Books</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/cardPage/index.html">Card Books</a>
-          </li>
-          <li>
-            <form class="d-flex">
-              <input id="searchQuerry" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" />
-              <button id="search" class="btn btn-outline-success" type="button">Искать</button>
-            </form>
-          </li>
-        </ul>
-        <!-- блок регистрации входа и отображения пользователя -->
-        <div>
-          <label class="form-label me-2">Иванов Василий Федорович Роль: Администратор</label>>
-          <button id="exit" type="button" class="btn btn-outline-info">Выход</button>
-        </div>
-      </div>
-    </nav>
-    <!-- Содержимое страницы -->
-    <div class="container">
-      <!-- Фильтры -->
-      <div class="row mt-3">
-        <div class="col-2">
-          <label for="exampleFormControlInput1" class="form-label">Book Tittle</label>
-          <input type="email" class="form-control" id="bookTitle" />
-        </div>
-        <div class="col-2">
-          <label for="exampleFormControlInput1" class="form-label">AuthorName</label>
-          <input type="email" class="form-control" id="authorName" placeholder="" />
-        </div>
-        <div class="col-2">
-          <label for="exampleFormControlInput1" class="form-label">Category search</label>
-          <select id="category" class="form-select">
-            <option value="" selected>Все категории</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label class="form-label" for="">Выбор даты</label>
-          <input id="publishedDate" class="form-control" type="text" name="" />
-        </div>
-        <div class="col-3">
-          <label for="exampleFormControlInput1" class="form-label">Price range</label>
-          <div class="d-flex flex-row">
-            <input id="priceStart" type="number" aria-label="First name" class="form-control me-2" />
-            <input id="priceEnd" type="number" aria-label="Last name" class="form-control" />
-          </div>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <button id="btnFilterApply" class="btn btn-primary">Применить фильтр</button>
-      </div>
-      <div class="row mt-3 d-flex justify-content-start">
-        <!-- Таблица книг -->
-        <div class="table-responsive">
-          <table class="bookPreviewTable table table-striped table-hover table-bordered mt-4" id="loadTable">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">PublishedOn</th>
-                <th scope="col">Category</th>
-                <th scope="col">ImageUrl</th>
-                <th scope="col">Author/s</th>
-                <th scope="col">Price</th>
-                <th scope="col">Color</th>
-                <th scope="col">BindingType</th>
-                <th scope="col">Condition</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider"></tbody>
-          </table>
-        </div>
-        <!-- Модальное окно отзывы и оценки -->
-        <div class="modal fade modal-lg" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">FeedBack</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <input id="reviewBookId" type="text" class="d-none" />
-                <div class="table-responsive">
-                  <table id="reviewTable" class="table table-striped table-hover table-bordered mt-5 w-100">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Comment</th>
-                        <th scope="col">NumStars</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-group-divider"></tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="stylesheet" href="/airDatePicker/index.css" />
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	</head>
+	<body>
+		<h1 class="text-center">BookShop</h1>
+		<!-- Меню -->
+		<nav class="navbar navbar-light" style="background-color: #e3f2fd">
+			<div class="container-fluid">
+				<ul class="nav nav-pills">
+					<li class="nav-item">
+						<a id="loadBooks" class="nav-link" href="/pages/loadPage/index.html">Load Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/pages/tablePage/index.html">Table Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/pages/cardPage/index.html">Card Books</a>
+					</li>
+					<li>
+						<form class="d-flex">
+							<input id="searchQuerry" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" />
+							<button id="search" class="btn btn-outline-success" type="button">Искать</button>
+						</form>
+					</li>
+				</ul>
+				<!-- блок регистрации входа и отображения пользователя -->
+				<div>
+					<label class="form-label me-2"><span id="userName"></span> Роль: <span id="userRole"></span></label>
+					<button id="exit" type="button" class="btn btn-outline-info">Выход</button>
+				</div>
+			</div>
+		</nav>
+		<!-- Содержимое страницы -->
+		<div class="container">
+			<!-- Фильтры -->
+			<div class="row mt-3">
+				<div class="col-2">
+					<label for="exampleFormControlInput1" class="form-label">Book Tittle</label>
+					<input type="email" class="form-control" id="bookTitle" />
+				</div>
+				<div class="col-2">
+					<label for="exampleFormControlInput1" class="form-label">AuthorName</label>
+					<input type="email" class="form-control" id="authorName" placeholder="" />
+				</div>
+				<div class="col-2">
+					<label for="exampleFormControlInput1" class="form-label">Category search</label>
+					<select id="category" class="form-select">
+						<option value="" selected>Все категории</option>
+					</select>
+				</div>
+				<div class="col-3">
+					<label class="form-label" for="">Выбор даты</label>
+					<input id="publishedDate" class="form-control" type="text" name="" />
+				</div>
+				<div class="col-3">
+					<label for="exampleFormControlInput1" class="form-label">Price range</label>
+					<div class="d-flex flex-row">
+						<input id="priceStart" type="number" aria-label="First name" class="form-control me-2" />
+						<input id="priceEnd" type="number" aria-label="Last name" class="form-control" />
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<button id="btnFilterApply" class="btn btn-primary">Применить фильтр</button>
+			</div>
+			<div class="row mt-3 d-flex justify-content-start">
+				<!-- Таблица книг -->
+				<div class="table-responsive">
+					<table class="bookPreviewTable table table-striped table-hover table-bordered mt-4" id="loadTable">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Title</th>
+								<th scope="col">Description</th>
+								<th scope="col">PublishedOn</th>
+								<th scope="col">Category</th>
+								<th scope="col">ImageUrl</th>
+								<th scope="col">Author/s</th>
+								<th scope="col">Price</th>
+								<th scope="col">Color</th>
+								<th scope="col">BindingType</th>
+								<th scope="col">Condition</th>
+								<th id="colAction" scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody class="table-group-divider"></tbody>
+					</table>
+				</div>
+				<!-- Модальное окно отзывы и оценки -->
+				<div class="modal fade modal-lg" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">FeedBack</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<input id="reviewBookId" type="text" class="d-none" />
+								<div class="table-responsive">
+									<table id="reviewTable" class="table table-striped table-hover table-bordered mt-5 w-100">
+										<thead>
+											<tr>
+												<th scope="col">#</th>
+												<th scope="col">Name</th>
+												<th scope="col">Comment</th>
+												<th scope="col">NumStars</th>
+											</tr>
+										</thead>
+										<tbody class="table-group-divider"></tbody>
+									</table>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
-        <!-- модальное окно редактирования -->
-        <div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form id="editForm" action="">
-                  <!--определяет id книги выделяет книгу в которую внесли изменения по id-->
-                  <input name="Id" id="id" class="d-none" type="text" />
+				<!-- модальное окно редактирования -->
+				<div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form id="editForm" action="">
+									<!--определяет id книги выделяет книгу в которую внесли изменения по id-->
+									<input name="Id" id="id" class="d-none" type="text" />
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input name="Title" type="text" class="form-control" id="title" placeholder="Enter the title" />
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Title</label>
+										<input name="Title" type="text" class="form-control" id="title" placeholder="Enter the title" />
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                    <textarea name="Description" class="form-control" id="description" rows="3"></textarea>
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlTextarea1" class="form-label">Description</label>
+										<textarea name="Description" class="form-control" id="description" rows="3"></textarea>
+									</div>
 
-                  <div class="mb-3">
-                    <label class="form-label" for="">Выбор даты</label>
-                    <input name="PublishedOn" id="editDate" class="form-control" type="text" />
-                  </div>
+									<div class="mb-3">
+										<label class="form-label" for="">Выбор даты</label>
+										<input name="PublishedOn" id="editDate" class="form-control" type="text" />
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Category</label>
-                    <select name="Category" id="editCategory" class="form-control">
-                      <option></option>
-                    </select>
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Category</label>
+										<select name="Category" id="editCategory" class="form-control">
+											<option></option>
+										</select>
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">ImageUrl</label>
-                    <input name="ImageUrl" type="text" class="form-control" id="imageUrl" placeholder="Enter the imageUrl" />
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">ImageUrl</label>
+										<input name="ImageUrl" type="text" class="form-control" id="imageUrl" placeholder="Enter the imageUrl" />
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Author/s</label>
-                    <select name="Authors" id="editAuthors" class="form-control" multiple="multiple">
-                      <option></option>
-                    </select>
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Author/s</label>
+										<select name="Authors" id="editAuthors" class="form-control" multiple="multiple">
+											<option></option>
+										</select>
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Price</label>
-                    <div class="input-group mb-3">
-                      <input name="Price" type="text" id="editPrice" class="form-control w-75" aria-label="" />
-                      <select class="form-select" id="currencyChoise">
-                        <option selected value="rub">₽ RUB</option>
-                        <option value="usd">$ USD</option>
-                        <option value="eur">€ EUR</option>
-                      </select>
-                    </div>
-                  </div>
-                </form>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Price</label>
+										<div class="input-group mb-3">
+											<input name="Price" type="text" id="editPrice" class="form-control w-75" aria-label="" />
+											<select class="form-select" id="currencyChoise">
+												<option selected value="rub">₽ RUB</option>
+												<option value="usd">$ USD</option>
+												<option value="eur">€ EUR</option>
+											</select>
+										</div>
+									</div>
+								</form>
 
-                <form id="editProperty" action="">
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Color</label>
-                    <input name="Color" type="text" class="form-control" id="color" placeholder="Enter the color" />
-                  </div>
+								<form id="editProperty" action="">
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Color</label>
+										<input name="Color" type="text" class="form-control" id="color" placeholder="Enter the color" />
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Binding type</label>
-                    <input name="BindingType" type="text" class="form-control" id="bindingType" placeholder="Enter the binding type" />
-                  </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Binding type</label>
+										<input name="BindingType" type="text" class="form-control" id="bindingType" placeholder="Enter the binding type" />
+									</div>
 
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Condition</label>
-                    <input name="Condition" type="text" class="form-control" id="condition" placeholder="Enter the condition" />
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="saveBtn" type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1" class="form-label">Condition</label>
+										<input name="Condition" type="text" class="form-control" id="condition" placeholder="Enter the condition" />
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button id="saveBtn" type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!-- here chart added -->
-    <div style="width: 400px; height: 200px">
-      <canvas id="myChart"></canvas>
-    </div>
+		<!-- here chart added -->
+		<div style="width: 400px; height: 200px">
+			<canvas id="myChart"></canvas>
+		</div>
 
-    <div style="width: 800px; height: 400px">
-      <select name="" id="chartSelectRange">
-        <option value="0">день</option>
-        <option value="1">неделя</option>
-        <option value="2">месяц</option>
-      </select>
-      <button id="chartFull" class="btn-primary btn">увеличить</button>
-      <canvas id="myChart2"></canvas>
-    </div>
+		<div style="width: 800px; height: 400px">
+			<select name="" id="chartSelectRange">
+				<option value="0">день</option>
+				<option value="1">неделя</option>
+				<option value="2">месяц</option>
+			</select>
+			<button id="chartFull" class="btn-primary btn">увеличить</button>
+			<canvas id="myChart2"></canvas>
+		</div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"
-      integrity="sha512-zJYu9ICC+mWF3+dJ4QC34N9RA0OVS1XtPbnf6oXlvGrLGNB8egsEzu/5wgG90I61hOOKvcywoLzwNmPqGAdATA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="/airDatePicker/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.0/chartjs-plugin-zoom.min.js"
-      integrity="sha512-B6F98QATBNaDHSE7uANGo5h0mU6fhKCUD+SPAY7KZDxE8QgZw9rewDtNiu3mbbutYDWOKT3SPYD8qDBpG2QnEg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="/libs/serializedJson/jquery.serializejson.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js/tablePage/index.js" type="module"></script>
-  </body>
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"
+			integrity="sha512-zJYu9ICC+mWF3+dJ4QC34N9RA0OVS1XtPbnf6oXlvGrLGNB8egsEzu/5wgG90I61hOOKvcywoLzwNmPqGAdATA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="/airDatePicker/index.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.0/chartjs-plugin-zoom.min.js"
+			integrity="sha512-B6F98QATBNaDHSE7uANGo5h0mU6fhKCUD+SPAY7KZDxE8QgZw9rewDtNiu3mbbutYDWOKT3SPYD8qDBpG2QnEg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="/libs/serializedJson/jquery.serializejson.min.js"></script>
+		<script src="/libs/jquerryCookie/jquery.cookie.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="/js/tablePage/index.js" type="module"></script>
+	</body>
 </html>

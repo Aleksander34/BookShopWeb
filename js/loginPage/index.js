@@ -11,7 +11,7 @@ $(function () {
 
 	$('#registrationBtn').click(async function () {
 		let userDto = $('#RegitrationForm').serializeJSON();
-		userDto.Role=+userDto.Role;
+		userDto.Role = +userDto.Role;
 		let token = await accountService.registration(userDto);
 		if (token != null) {
 			location.href = '/pages/tablePage/index.html'; //меняем путь после входа

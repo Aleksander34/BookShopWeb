@@ -3,6 +3,10 @@ import bookService from '../api/bookService.js';
 import reviewService from '../api/reviewService.js';
 import authorService from '../api/authorService.js';
 import categoryService from '../api/categoryService.js';
+import Session from '../Session.js';
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Session.token;
+
 $(async function () {
 	//Локализация таблицы
 	let language = {
@@ -239,6 +243,9 @@ $(async function () {
 	// функция чтения названий категорий в выпадающий список
 	async function initCategories() {
 		let categories = await bookService.getCategories();
+		if (categories == null) {
+			return;
+		}
 		categories.forEach((x, y) => {
 			$('#category').append(`<option>${x}</option>`);
 		});
@@ -405,6 +412,9 @@ $(async function () {
 	const ctx2 = document.getElementById('myChart2');
 	let chart2;
 	bookService.GetBookOnDate(0).then(function (result) {
+		if (result == null) {
+			return;
+		}
 		let published = result.map((x) => x.published);
 		let counts = result.map((x) => x.count);
 		chart2 = new Chart(ctx2, {
@@ -463,8 +473,15 @@ $(async function () {
 		$(this).parent().toggleClass('full');
 	});
 
-$('#exit').click(function(){
-	location.href='/pages/loginPage/index.html';
-})
+	$('#exit').click(function () {
+		location.href = '/pages/loginPage/index.html';
+	});
 
+	$('#userName').text(Session.name);
+	$('#userRole').text(Session.role);
+
+	if (Session.role == 'Customer') {
+		$('#loadBooks').addClass('d-none');
+		// $('#colAction').addClass('d-none');
+	}
 });
