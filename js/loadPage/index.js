@@ -1,8 +1,9 @@
 //импорт сервисов
 import bookService from '../api/bookService.js';
 import reviewService from '../api/reviewService.js';
+import Session from '../Session.js';
 $(async function () {
-	let file = null; // переменная файла который загружают
+	Session.Init();
 	//Локализация таблицы
 	let language = {
 		emptyTable: 'нет данных',
@@ -16,6 +17,29 @@ $(async function () {
 			previous: '<<',
 		},
 	};
+
+	let file = null; // переменная файла который загружают
+
+	$('#file').change(async function () {
+		// событие которое происходит при загрузке файла.
+		if ($(this).get(0).files.length > 0) {
+			// проверяем что был выбран файл
+			let fileName = $(this).get(0).files[0].name;
+			if (!fileName.match(/.*\.(xlsx|xls|xlsb)/)) {
+				// проверяем нужный формат у файла
+				// toastr['warning']('Допустимые форматы: .xlsx .xls .xlsb', 'Не верный формат файла');
+				// $('#requestPreviewInfo').addClass('d-none');
+				return;
+			}
+			file = $(this).get(0).files[0]; // в переменную кладем выбранный файл
+			books.ajax.reload().draw(false); // обновляем таблицу книг
+		}
+	});
+
+	$('#load').click(async function () {
+		// срабатывает при нажатии на кнопку загрузить файл
+		await bookService.addBooks(file);
+	});
 
 	//Таблица отображения загрузки книг
 	let books = $('#loadTable').DataTable({
@@ -34,11 +58,12 @@ $(async function () {
 			"<'col-lg-5 col-xs-12'<'float-right'p>>",
 			'>',
 		].join(''),
-		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
+		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => books.ajax.reload().draw(false) }], // дополнительные кнопки обновления ,  обновляем таблицу книг
 		language: language,
 		ajax: async (data, success, failure) => {
-			let result = await bookService.previewBooks(file);
-			success(result);
+			//получение данных с сервера
+			let result = await bookService.previewBooks(file); //данные файла берем с сервера на основе файла
+			success(result); // отдаем ДТО таблицы. Таблица получив ДТО, понимает в какие колонки их засунуть см код на 74-85 строке
 		},
 		columns: [
 			{
@@ -51,7 +76,7 @@ $(async function () {
 				},
 			},
 			{
-				data: 'title',
+				data: 'title', // тащим данные с сервера в таблицу в "поля ДТО"
 			},
 			{ data: 'description' },
 			{ data: 'publishedOn' },
@@ -63,21 +88,5 @@ $(async function () {
 			{ data: 'property.bindingType' },
 			{ data: 'property.condition' },
 		],
-	});
-
-	$('#file').change(async function () {
-		if ($(this).get(0).files.length > 0) {
-			let fileName = $(this).get(0).files[0].name;
-			if (!fileName.match(/.*\.(xlsx|xls|xlsb)/)) {
-				// toastr['warning']('Допустимые форматы: .xlsx .xls .xlsb', 'Не верный формат файла');
-				// $('#requestPreviewInfo').addClass('d-none');
-				return;
-			}
-			file = $(this).get(0).files[0];
-			books.ajax.reload().draw(false);
-		}
-	});
-	$('#load').click(async function () {
-		await bookService.addBooks(file);
 	});
 });

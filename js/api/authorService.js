@@ -1,9 +1,10 @@
 class AuthorService {
 	constructor() {
-		this.url = 'https://localhost:7160/api/Author';
+		this.url = 'https://localhost:7160/api/Author'; // подключаем адрес до контроллера на сервере смотрим в свагер
 	}
 
 	async getAll() {
+		// метод контроллера
 		let result = null;
 		await axios
 			.get(this.url + '/GetAll')

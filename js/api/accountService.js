@@ -1,10 +1,11 @@
-import Session from '../Session.js';
+import Session from '../Session.js'; //импорт session.js
 class AccountService {
 	constructor() {
-		this.url = 'https://localhost:7160/api/Account';
+		this.url = 'https://localhost:7160/api/Account'; // указывает на путь до контроллера с сервера
 	}
 
 	async login(input) {
+		// методы контроллера
 		let result = null;
 		await axios
 			.post(this.url + '/Login', input)
@@ -22,6 +23,7 @@ class AccountService {
 	}
 
 	async registration(input) {
+		// методы контроллера
 		let result = null;
 		await axios
 			.post(this.url + '/Registration', input)
@@ -38,4 +40,4 @@ class AccountService {
 		return result;
 	}
 }
-export default new AccountService();
+export default new AccountService(); // отдаем объект данного сервиса чтобы можно с ним работать в других файлах

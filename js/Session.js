@@ -42,6 +42,15 @@ class Session {
 		$.removeCookie('role');
 		$.removeCookie('token');
 		axios.defaults.headers.common['Authorization'] = '';
+		location.href = '/pages/loginPage/index.html';
+	}
+
+	Init() {
+		if (this.token != undefined) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
+		} else {
+			location.href = '/pages/loginPage/index.html';
+		}
 	}
 }
 

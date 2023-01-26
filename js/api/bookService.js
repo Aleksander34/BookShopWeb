@@ -33,10 +33,11 @@ class BookService {
 	}
 
 	async addBooks(file) {
-		let formData = new FormData();
+		let formData = new FormData(); // формат дата мы отправляем файлы иксель
 		formData.append('input', file);
 
 		const config = {
+			//заголовок форм даты
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -44,7 +45,7 @@ class BookService {
 
 		let result = null;
 		await axios
-			.post(this.url + '/AddBooks', formData, config)
+			.post(this.url + '/AddBooks', formData, config) // конфиг засовываем сюда
 			.then(function (response) {
 				result = response.data;
 				console.log(result);
@@ -121,7 +122,7 @@ class BookService {
 	async GetBookOnDate(input) {
 		let result = null;
 		await axios
-			.get(this.url + '/GetBookOnDate?input=' + input)
+			.get(this.url + '/GetBookOnDate?input=' + input) // если гет запрос и у контроллера есть входной параметр то пишем /GetBookOnDate?input=' + input
 			.then(function (response) {
 				result = response.data;
 				console.log(response);
@@ -132,4 +133,4 @@ class BookService {
 		return result;
 	}
 }
-export default new BookService();
+export default new BookService(); // экспорт для подключения в других файлах

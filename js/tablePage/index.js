@@ -5,9 +5,10 @@ import authorService from '../api/authorService.js';
 import categoryService from '../api/categoryService.js';
 import Session from '../Session.js';
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Session.token;
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Session.token; // из сессии берем токен и устанавливаем заголовок для axios/ Сервер предоставить данные только если токен передан
 
 $(async function () {
+	Session.Init();
 	//Локализация таблицы
 	let language = {
 		emptyTable: 'нет данных',
@@ -65,7 +66,7 @@ $(async function () {
 			"<'col-lg-5 col-xs-12'<'float-right'p>>",
 			'>',
 		].join(''),
-		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => console.log('refresh') }],
+		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => books.ajax.reload().draw(false) }],
 		language: language,
 		ajax: async (data, success, failure) => {
 			let priceStart = $('#priceStart').val(); //входный данные фильтров
@@ -122,6 +123,7 @@ $(async function () {
 				data: null,
 				defaultContent: '',
 				render: function (data, type, row, meta) {
+					//рендер уникальное отображение html в ячейку
 					return `<div class="d-flex"><button data-id="${row.id}" class=" delete btn btn-sm bg-danger me-2">delete</button> <button data-id="${row.id}" class="edit btn btn-sm bg-secondary" data-bs-toggle="modal" data-bs-target="#editModal">edit</button></div>`;
 				},
 			},
@@ -129,6 +131,7 @@ $(async function () {
 	});
 
 	$(document).on('click', '.delete', async function () {
+		// не доделано
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "You won't be able to revert this!",
@@ -474,7 +477,7 @@ $(async function () {
 	});
 
 	$('#exit').click(function () {
-		location.href = '/pages/loginPage/index.html';
+		Session.logout();
 	});
 
 	$('#userName').text(Session.name);
@@ -484,4 +487,11 @@ $(async function () {
 		$('#loadBooks').addClass('d-none');
 		// $('#colAction').addClass('d-none');
 	}
+
+	$('#columnHide').change(function () {
+		// Get the column API object
+		var column = books.column('11');
+		// Toggle the visibility
+		column.visible(!column.visible());
+	});
 });
