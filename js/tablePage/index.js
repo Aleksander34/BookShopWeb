@@ -130,7 +130,7 @@ $(async function () {
 		],
 	});
 
-	$(document).on('click', '.delete', async function () {
+	$(document).on('click', '.delete', function () {
 		// не доделано
 		Swal.fire({
 			title: 'Are you sure?',
@@ -140,13 +140,14 @@ $(async function () {
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Yes, delete it!',
-		}).then(async (result) => {
+		}).then((result) => {
 			if (result.isConfirmed) {
 				// удаление
 				let bookId = $(this).data('id');
-				await bookService.remove(bookId);
-				books.ajax.reload(); // обновление
-				Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+				bookService.remove(bookId).then(function () {
+					books.ajax.reload(); // обновление
+					Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+				});
 			}
 		});
 	});
