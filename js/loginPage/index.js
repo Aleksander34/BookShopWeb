@@ -1,4 +1,6 @@
 import accountService from '../api/accountService.js';
+import Session from '../Session.js';
+Session.checkAutentificate();
 $(function () {
 	$('#loginButton').click(async function () {
 		//событие срабатывающее при нажатии на кнопку войти
@@ -6,6 +8,7 @@ $(function () {
 		let accountInfo = await accountService.login(userDto);
 
 		if (accountInfo != null) {
+			Session.isRemember = $('#isRemember').val();
 			location.href = '/pages/tablePage/index.html'; //меняем путь после входа
 		}
 	});

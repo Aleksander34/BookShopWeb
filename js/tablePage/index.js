@@ -69,22 +69,22 @@ $(async function () {
 		buttons: [{ name: 'refresh', text: '<i class="fa-solid fa-rotate"></i>', action: () => books.ajax.reload().draw(false) }],
 		language: language,
 		ajax: async (data, success, failure) => {
-			let priceStart = $('#priceStart').val(); //входный данные фильтров
-			let priceEnd = $('#priceEnd').val(); //входный данные фильтров
-			if (priceStart) {
-				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
-				filters.priceStart = priceStart;
-			}
-			if (priceEnd) {
-				// если пустое условие тогда проверяет он не нулл, он есть и заполнен
-				filters.priceEnd = priceEnd;
-			}
+			// берем значение с поля ввода, если оно установлено то оставлеем его или устанавливаем null(если значение не установлено)
+			filters.priceStart = $('#priceStart').val() || null;
+			// берем значение с поля ввода, если оно установлено то оставлеем его или устанавливаем null(если значение не установлено)
+			filters.priceEnd = $('#priceEnd').val() || null;
+
 			filters.search = $('#searchQuerry').val();
 			filters.category = $('#category').val();
 			filters.countOnPage = data.length; //входный данные фильтров
 			filters.skipCount = data.start; //входный данные фильтров
 			filters.bookTitle = $('#bookTitle').val(); //входный данные фильтров
 			filters.authorName = $('#authorName').val(); //входный данные фильтров
+			if ($('#publishedDate').val() == '') {
+				filters.publishedDateStart = null;
+				filters.publishedDateEnd = null;
+			}
+			console.log(filters);
 			let result = await bookService.getAll(filters);
 			success(result);
 		},
@@ -156,7 +156,6 @@ $(async function () {
 		// редактирование
 		let bookId = $(this).data('id');
 		let book = await bookService.get(bookId);
-		console.log(book);
 		$('#title').val(book.title);
 		$('#description').val(book.description);
 		$('#editDate').val(book.publishedOn);
